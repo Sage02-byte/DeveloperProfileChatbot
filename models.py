@@ -60,6 +60,6 @@ class DeveloperProfile(BaseModel):
     def validate_enterprise_requirements(self):
         if self.account_type == "enterprise" and not self.company_name:
             raise ValueError("Company name is required while registering for an enterprise.")
-        if self.account_type == "pr" and self.company_name:
+        if self.account_type == "professional" and self.company_name:
             raise ValueError("Peronal accounts not do not to register compnay names.")
         return self
