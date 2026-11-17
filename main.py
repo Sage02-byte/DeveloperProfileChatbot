@@ -34,13 +34,13 @@ def run_chat_intake():
 
     try:
         print("Assistant is ready...")
-        # Fixed: requests.post (not resquests.post) and assigned properly to response
+        
         response = requests.post(LLAMA_CPP_URL, json=initial_greeting_payload, timeout=60)
         response.raise_for_status()
         assistant_message = response.json()["choices"][0]["message"]["content"]
 
         print(f"\nAssistant: {assistant_message}")
-        # Fixed: role is "assistant" and variable name is assistant_message
+        
         chat_history.append({"role": "assistant", "content": assistant_message})
 
     except requests.exceptions.ConnectionError:  # Fixed: requests.exceptions (plural)
@@ -53,7 +53,7 @@ def run_chat_intake():
     while True:
         try:
             user_input = input("\nYou: ").strip()
-        except (KeyboardInterrupt, EOFError):  # Fixed indentation here
+        except (KeyboardInterrupt, EOFError):  
             print("\nExiting session. Goodbye!")
             break
 
@@ -68,20 +68,20 @@ def run_chat_intake():
 
         payload = {
             "model": "local-model",
-            "messages": chat_history,  # Fixed: was pointing to 'messages' instead of chat_history
+            "messages": chat_history,  
             "temperature": 0.7,
-            "stream": False  # Fixed typo: Fasle -> False
+            "stream": False  
         }
 
         try:
-            # Fixed: timeout (not timout) and response variable assignment
+            
             response = requests.post(LLAMA_CPP_URL, json=payload, timeout=60)
-            response.raise_for_status()  # Fixed typo: respose -> response
+            response.raise_for_status()  
 
             assistant_message = response.json()["choices"][0]["message"]["content"]
             print(f"\nAssistant: {assistant_message}")
 
-            # Fixed spelling: role 'assistant' and assistant_message
+    
             chat_history.append({"role": "assistant", "content": assistant_message})
 
             # Check if assistant triggered the closing sign-off
@@ -101,8 +101,8 @@ def run_chat_intake():
         except requests.exceptions.ConnectionError:
             print("\n[ERROR]: Lost connection to local llama.cpp server.")
             break
-        except Exception as e:  # Fixed: capitalized Exception
-            print(f"\n[ERROR]: {e}")  # Fixed formatting: added f-string and fixed ]n -> \n
+        except Exception as e:  
+            print(f"\n[ERROR]: {e}")  
 
-if __name__ == "__main__":  # Fixed syntax error: removed extra ()
+if __name__ == "__main__":  
     run_chat_intake()
