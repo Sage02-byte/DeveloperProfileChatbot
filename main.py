@@ -85,13 +85,13 @@ def run_chat_intake():
             chat_history.append({"role": "assistant", "content": assistant_message})
 
             # Check if assistant triggered the closing sign-off
-            if assistant_message.strip().startswith("Thank you!"):
+            if assistant_message.lower() in ["done","finish","complete"]:
                 print("\n" + "=" * 50)
                 print("Intake completed! Triggering automated extraction pipeline...")
                 print("=" * 50)
 
                 # Call your extractor function and pass the chat history
-                profile = extract_developer_profile(chat_history)
+                profile = extractor_developer_profile(chat_history)
 
                 print("\nSuccessfully extracted and validated!")
                 print(profile.model_dump_json(indent=2))
